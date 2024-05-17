@@ -26,6 +26,17 @@ extern char trampoline[]; // trampoline.S
 // must be acquired before any p->lock.
 struct spinlock wait_lock;
 
+// implement getprocs() to calculate nums of the active procs
+int getprocs(void){
+  int tot = 0;
+  for(int i = 0; i < NPROC; i++){
+    if(proc[i].state == RUNNING){
+      tot++;
+    }
+  }
+  return tot;
+}
+
 // Allocate a page for each process's kernel stack.
 // Map it high in memory, followed by an invalid
 // guard page.
