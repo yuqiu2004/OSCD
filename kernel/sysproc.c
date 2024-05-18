@@ -7,6 +7,11 @@
 #include "proc.h"
 
 uint64
+sys_getprocs(void){
+    return getprocs();
+}
+
+uint64
 sys_exit(void)
 {
   int n;
