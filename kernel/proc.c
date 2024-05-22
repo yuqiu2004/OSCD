@@ -27,8 +27,8 @@ extern char trampoline[]; // trampoline.S
 struct spinlock wait_lock;
 
 // implement getprocs() to calculate nums of the active procs
-unsigned long getprocs(void){
-  unsigned long tot = 0;
+int getprocs(void){
+  int tot = 0;
   for(int i = 0; i < NPROC; i++){
     if(proc[i].state == RUNNING){
       tot++;
