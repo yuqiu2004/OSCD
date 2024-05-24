@@ -30,9 +30,11 @@ struct spinlock wait_lock;
 int getprocs(void){
   int tot = 0;
   for(int i = 0; i < NPROC; i++){
-    if(proc[i].state == RUNNING){
+    acquire(&proc[i].lock);
+    if(proc[i].state != UNUSED){
       tot++;
     }
+    release(&proc[i].lock);
   }
   return tot;
 }
