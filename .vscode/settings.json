@@ -8,6 +8,8 @@
         "riscv.h": "c",
         "spinlock.h": "c",
         "proc.h": "c",
-        "defs.h": "c"
+        "defs.h": "c",
+        "fs.h": "c",
+        "elf.h": "c"
     }
 }
