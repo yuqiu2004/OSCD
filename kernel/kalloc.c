@@ -23,20 +23,47 @@ struct {
   struct run *freelist;
 } kmem;
 
+/**
+ * 动态分区的结点 节点本身占用16字节
+ */ 
+struct node{
+  unsigned long size;
+  struct node *next;
+};
+
+struct kheap{
+  struct spinlock lock;
+  struct node *head;
+};
+
+struct kheap heap;
+
+/**
+ * 初始化内存 同时初始化自旋锁 
+ */
 void
 kinit()
 {
   initlock(&kmem.lock, "kmem");
+  initlock(&heap.lock,"kheap");
   freerange(end, (void*)PHYSTOP);
 }
 
+/**
+ * 此处进行初始化内存空间的时候堆内存要单独处理 不然就会也被加入到固定分配的链表中
+*/
 void
 freerange(void *pa_start, void *pa_end)
 {
   char *p;
   p = (char*)PGROUNDUP((uint64)pa_start);
-  for(; p + PGSIZE <= (char*)pa_end; p += PGSIZE)
+  for(; p + PGSIZE <= (char*)pa_end - 2048*PGSIZE; p += PGSIZE) // 一页4KB 吸血吸8MB=2K页用于动态内存分区
     kfree(p);
+  memset(p,1,2048*PGSIZE);
+  acquire(&heap.lock);
+  heap.head = p;
+  heap.head->next = heap.head;
+  release(&heap.lock);
 }
 
 // Free the page of physical memory pointed at by pa,
@@ -57,7 +84,7 @@ kfree(void *pa)
   r = (struct run*)pa;
 
   acquire(&kmem.lock);
-  r->next = kmem.freelist;
+  r->next = kmem.freelist; // 头插法将当前块插入到空闲块链表中
   kmem.freelist = r;
   release(&kmem.lock);
 }
@@ -79,4 +106,14 @@ kalloc(void)
   if(r)
     memset((char*)r, 5, PGSIZE); // fill with junk
   return (void*)r;
+}
+
+void *
+dalloc(uint size){
+
+}
+
+void
+dfree(void* p){
+  
 }
