@@ -8,7 +8,7 @@
 
 uint64
 sys_getprocs(void){
-    return getprocs();
+  return getprocs();
 }
 
 uint64

@@ -60,11 +60,15 @@ morecore(uint nu)
   return freep;
 }
 
+/**
+ * 用户动态内存分配实现
+ * 参数：请求字节数
+ */
 void*
 malloc(uint nbytes)
 {
   Header *p, *prevp;
-  uint nunits;
+  uint nunits;//新的总大小
 
   nunits = (nbytes + sizeof(Header) - 1)/sizeof(Header) + 1;
   if((prevp = freep) == 0){
