@@ -21,25 +21,29 @@ typedef union header Header;
 static Header base;
 static Header *freep;
 
+/**
+ * 释放之前分配的内存
+ * 传入要释放的内存块的指针
+*/
 void
 free(void *ap)
 {
   Header *bp, *p;
 
-  bp = (Header*)ap - 1;
-  for(p = freep; !(bp > p && bp < p->s.ptr); p = p->s.ptr)
-    if(p >= p->s.ptr && (bp > p || bp < p->s.ptr))
+  bp = (Header*)ap - 1; // ap是指向数据部分的 转换为header指针同时减去1个header移动到指向header结构的位置
+  for(p = freep; !(bp > p && bp < p->s.ptr); p = p->s.ptr) // 寻找到需要合并的空闲块
+    if(p >= p->s.ptr && (bp > p || bp < p->s.ptr)) // 遍历到链表尾部了也中止遍历
       break;
-  if(bp + bp->s.size == p->s.ptr){
+  if(bp + bp->s.size == p->s.ptr){ // 空闲块和下一块紧邻 合并
     bp->s.size += p->s.ptr->s.size;
     bp->s.ptr = p->s.ptr->s.ptr;
   } else
-    bp->s.ptr = p->s.ptr;
-  if(p + p->s.size == bp){
+    bp->s.ptr = p->s.ptr; // 和下一块不紧邻 指针指到下一块
+  if(p + p->s.size == bp){ // 和上一块紧邻 合并
     p->s.size += bp->s.size;
     p->s.ptr = bp->s.ptr;
   } else
-    p->s.ptr = bp;
+    p->s.ptr = bp; // 和上一块不紧邻 上一块的指针重定向到新回收的空闲块
   freep = p;
 }
 
