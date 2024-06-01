@@ -61,7 +61,7 @@ freerange(void *pa_start, void *pa_end)
     kfree(p);
   memset(p,1,2048*PGSIZE);
   acquire(&heap.lock);
-  heap.head = p;
+  heap.head = (struct node*)p;
   heap.head->next = heap.head;
   heap.head->size = 2048*PGSIZE - 16;
   release(&heap.lock);
@@ -140,12 +140,12 @@ dfree(void* p){
     if(t>=t->next && (fr>t || fr<t->next)) break;
   }
   char *ct = (char *)t, *cfr = (char *)fr;
-  if(cfr + fr->size == t->next){ // 空闲块和下一块紧邻 合并
+  if(cfr + fr->size == (char*)t->next){ // 空闲块和下一块紧邻 合并
     fr->size += (t->next->size+sizeof(struct node*));
     fr->next = t->next->next;
   } else
     fr->next = t->next; // 和下一块不紧邻 指针指到下一块
-  if(ct + t->size == fr){ // 和上一块紧邻 合并
+  if(ct + t->size == (char*)fr){ // 和上一块紧邻 合并
     t->size += (fr->size + sizeof(struct node*));
   } else
     t->next = fr; // 和上一块不紧邻 上一块的指针重定向到新回收的空闲块
