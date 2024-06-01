@@ -63,6 +63,7 @@ freerange(void *pa_start, void *pa_end)
   acquire(&heap.lock);
   heap.head = p;
   heap.head->next = heap.head;
+  heap.head->size = 2048*PGSIZE - 16;
   release(&heap.lock);
 }
 
@@ -110,10 +111,42 @@ kalloc(void)
 
 void *
 dalloc(uint size){
-
+  size += sizeof(struct node*);
+  struct node *t, *pre, *p;
+  pre = t = heap.head;
+  for(; pre<=t; pre=t,t=t->next){
+    if(t->size>=size) break;
+  }
+  if(t->size<size) return 0;
+  if(t->size>size) {
+    t->size -= size;
+    char *temp = (char *)t;
+    temp = temp + t->size;
+    p = (struct node *)temp;
+    p->size = size - sizeof(struct node*);
+  }else{
+    t->size = 0;
+    p = t;
+    p->size = size - sizeof(struct node*);
+  }
+  return (void*)(p+1);
 }
 
 void
 dfree(void* p){
-  
+  struct node *t, *fr;
+  fr = (struct node*) p - 1;
+  for(t=heap.head; !(fr>t && fr<t->next); t=t->next){
+    if(t>=t->next && (fr>t || fr<t->next)) break;
+  }
+  char *ct = (char *)t, *cfr = (char *)fr;
+  if(cfr + fr->size == t->next){ // 空闲块和下一块紧邻 合并
+    fr->size += (t->next->size+sizeof(struct node*));
+    fr->next = t->next->next;
+  } else
+    fr->next = t->next; // 和下一块不紧邻 指针指到下一块
+  if(ct + t->size == fr){ // 和上一块紧邻 合并
+    t->size += (fr->size + sizeof(struct node*));
+  } else
+    t->next = fr; // 和上一块不紧邻 上一块的指针重定向到新回收的空闲块
 }

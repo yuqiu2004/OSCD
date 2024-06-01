@@ -74,8 +74,8 @@ malloc(uint nbytes)
   Header *p, *prevp;
   uint nunits;//新的总大小
 
-  nunits = (nbytes + sizeof(Header) - 1)/sizeof(Header) + 1;
-  if((prevp = freep) == 0){
+  nunits = (nbytes + sizeof(Header) - 1)/sizeof(Header) + 1; // 对齐块数
+  if((prevp = freep) == 0){ // 空闲链表为空
     base.s.ptr = freep = prevp = &base;
     base.s.size = 0;
   }
