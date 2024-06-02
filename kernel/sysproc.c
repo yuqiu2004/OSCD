@@ -10,7 +10,7 @@ uint64
 sys_dalloc(void){
   int size;
   argint(0,&size);
-  return dalloc(size);
+  return (uint64)dalloc(size);
 }
 
 uint64

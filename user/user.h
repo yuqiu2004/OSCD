@@ -23,7 +23,7 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int getprocs(void);
-void* dalloc(uint);
+void* dalloc(unsigned int);
 
 // ulib.c
 int stat(const char*, struct stat*);
