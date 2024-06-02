@@ -26,6 +26,9 @@ extern char trampoline[]; // trampoline.S
 // must be acquired before any p->lock.
 struct spinlock wait_lock;
 
+// implement kdalloc() and kdfree()
+
+
 // implement getprocs() to calculate nums of the active procs
 int getprocs(void){
   int tot = 0;
