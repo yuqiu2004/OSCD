@@ -102,7 +102,6 @@ extern uint64 sys_link(void);
 extern uint64 sys_mkdir(void);
 extern uint64 sys_close(void);
 extern uint64 sys_getprocs(void);
-extern void* dalloc(uint);
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -128,19 +127,8 @@ static uint64 (*syscalls[])(void) = {
 [SYS_link]    sys_link,
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
-[SYS_getprocs] sys_getprocs,
-[SYS_dalloc] sys_dalloc
+[SYS_getprocs] sys_getprocs
 };
-
-void*
-sys_dalloc(void)
-{
-  int size;
-
-  if(argint(0, &size) < 0)
-    return (void*)-1;
-  return dalloc(size);
-}
 
 void
 syscall(void)
