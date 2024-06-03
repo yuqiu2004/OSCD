@@ -63,6 +63,8 @@ void            ramdiskrw(struct buf*);
 void*           kalloc(void);
 void            kfree(void *);
 void            kinit(void);
+uint64          getAddr(void);
+uint64          getSizeofStruct(void);
 void*           dalloc(uint);
 void            dfree(void*);
 

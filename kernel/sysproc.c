@@ -8,13 +8,27 @@
 
 uint64
 sys_test(void){
+  printf("init addr is: %p, sizeof struct node is %d \n\n",getAddr(), getSizeofStruct());
+
   int *a = (int*)dalloc(sizeof(int));
   *a = 1;
-  printf("dalloc int  a:\n\tvalue:%d\t\taddr:%p\n",*a,a);
+  printf("dalloc int  a:\n\tvalue:%d\t\taddr:%p\tsize:%d\n",*a,a,sizeof(int));
 
-  char *b = (char*)dalloc(sizeof(char));
-  *b = 'b';
-  printf("dalloc char b:\n\tvalue:%c\taddr:%p\n",*b,b);
+  short *b = (short*)dalloc(sizeof(short));
+  *b = 8;
+  printf("dalloc short b:\n\tvalue:%d\t\taddr:%p\tsize:%d\n",*b,b,sizeof(short));
+
+  long *c = (long*)dalloc(sizeof(long));
+  *c = 24;
+  printf("dalloc long b:\n\tvalue:%d\taddr:%p\tsize:%d\n",*c,c,sizeof(long));
+
+  dfree(c);
+  printf("dfree memory of c...\n");
+
+  int *d = (int*)dalloc(sizeof(int));
+  *d = 23;
+  printf("dalloc int  a:\n\tvalue:%d\taddr:%p\tsize:%d\n",*d,d,sizeof(int));
+
   return 0;
 }
 
