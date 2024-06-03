@@ -10,11 +10,11 @@ uint64
 sys_test(void){
   int *a = (int*)dalloc(sizeof(int));
   *a = 1;
-  printf("dalloc int a:\n\tvalue:%d\taddr:%d\n",*a,a);
+  printf("dalloc int  a:\n\tvalue:%d\t\taddr:%p\n",*a,a);
 
   char *b = (char*)dalloc(sizeof(char));
   *b = 'b';
-  printf("dalloc char b:\b\tvalue:%c\taddr:%d\n",*b,b);
+  printf("dalloc char b:\n\tvalue:%c\taddr:%p\n",*b,b);
   return 0;
 }
 
