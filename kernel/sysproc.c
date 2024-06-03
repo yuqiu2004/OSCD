@@ -7,10 +7,15 @@
 #include "proc.h"
 
 uint64
-sys_dalloc(void){
-  int size;
-  argint(0,&size);
-  return (uint64)dalloc(size);
+sys_test(void){
+  int *a = (int*)dalloc(sizeof(int));
+  *a = 1;
+  printf("dalloc int a:\n\tvalue:%d\taddr:%d\n",*a,a);
+
+  char *b = (char*)dalloc(sizeof(char));
+  *b = 'b';
+  printf("dalloc char b:\b\tvalue:%c\taddr:%d\n",*b,b);
+  return 0;
 }
 
 uint64
