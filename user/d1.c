@@ -1,6 +1,6 @@
 #include "user.h"
 
 int main(int argc, char *argv[]){
-    test();
+    d1();
     exit(0);
 }

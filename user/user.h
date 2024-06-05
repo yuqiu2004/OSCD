@@ -23,7 +23,9 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int getprocs(void);
-void test(void);
+void d1(void);
+void d2(void);
+void kmAddr(void);
 
 // ulib.c
 int stat(const char*, struct stat*);

@@ -7,28 +7,26 @@
 #include "proc.h"
 
 uint64
-sys_test(void){
-  printf("init addr is: %p, sizeof struct node is %d \n\n",getAddr(), getSizeofStruct());
+sys_kmAddr(void){
+  printf("init addr is: %p, sizeof struct node is %d \n",getAddr(), getSizeofStruct());
+  return 0;
+}
 
+uint64
+sys_d1(void){
+  printf("dalloc a int mem to a...\n");
   int *a = (int*)dalloc(sizeof(int));
-  *a = 1;
-  printf("dalloc int  a:\n\tvalue:%d\t\taddr:%p\tsize:%d\n",*a,a,sizeof(int));
+  printf("addr of a is %p\n",a);
+  printf("dfree addr of a...\n");
+  dfree(a);
+  return 0;
+}
 
-  short *b = (short*)dalloc(sizeof(short));
-  *b = 8;
-  printf("dalloc short b:\n\tvalue:%d\t\taddr:%p\tsize:%d\n",*b,b,sizeof(short));
-
-  long *c = (long*)dalloc(sizeof(long));
-  *c = 24;
-  printf("dalloc long b:\n\tvalue:%d\taddr:%p\tsize:%d\n",*c,c,sizeof(long));
-
-  dfree(c);
-  printf("dfree memory of c...\n");
-
-  int *d = (int*)dalloc(sizeof(int));
-  *d = 23;
-  printf("dalloc int  a:\n\tvalue:%d\taddr:%p\tsize:%d\n",*d,d,sizeof(int));
-
+uint64
+sys_d2(void){
+  printf("dalloc a long mem to b...\n");
+  long *b = (long*)dalloc(sizeof(long));
+  printf("addr of b is %p\n",b);
   return 0;
 }
 

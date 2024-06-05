@@ -37,4 +37,6 @@ entry("sbrk");
 entry("sleep");
 entry("uptime");
 entry("getprocs");
-entry("test");
+entry("d1");
+entry("d2");
+entry("kmAddr");
