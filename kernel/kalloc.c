@@ -155,8 +155,9 @@ dfree(void* p){
     fr->next = t->next->next;
   } else
     fr->next = t->next; // 和下一块不紧邻 指针指到下一块
-  if(ct + t->size + sizeof(struct node) == (char*)fr){ // 和上一块紧邻 合并
-    t->size += (fr->size + sizeof(struct node));
+  if(ct + t->size == (char*)fr){ // 和上一块紧邻 合并
+    t->size += (fr->size + sizeof(struct node*));
+    t->next = fr->next;
   } else
     t->next = fr; // 和上一块不紧邻 上一块的指针重定向到新回收的空闲块
 }
