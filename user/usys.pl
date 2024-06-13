@@ -39,4 +39,5 @@ entry("uptime");
 entry("getprocs");
 entry("d1");
 entry("d2");
+entry("d3");
 entry("kmAddr");

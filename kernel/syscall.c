@@ -105,6 +105,7 @@ extern uint64 sys_getprocs(void);
 extern uint64 sys_d1(void);
 extern uint64 sys_d2(void);
 extern uint64 sys_kmAddr(void);
+extern uint64 sys_d3(void);
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -133,7 +134,8 @@ static uint64 (*syscalls[])(void) = {
 [SYS_getprocs] sys_getprocs,
 [SYS_d1] sys_d1,
 [SYS_d2] sys_d2,
-[SYS_kmAddr] sys_kmAddr
+[SYS_kmAddr] sys_kmAddr,
+[SYS_d3] sys_d3
 };
 
 void

@@ -24,3 +24,4 @@
 #define SYS_d1 23
 #define SYS_d2 24
 #define SYS_kmAddr 25
+#define SYS_d3 26

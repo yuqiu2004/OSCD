@@ -26,6 +26,7 @@ int getprocs(void);
 void d1(void);
 void d2(void);
 void kmAddr(void);
+void d3(void);
 
 // ulib.c
 int stat(const char*, struct stat*);
