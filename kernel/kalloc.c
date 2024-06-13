@@ -123,10 +123,9 @@ void *
 dalloc(uint size){
   size += sizeof(struct node);
   struct node *t, *pre, *p;
-  pre = 0;
-  t = heap.head;
-  for(; pre<t; pre=t,t=t->next){
-    if(t->size>=size) break;
+  pre = t = heap.head;
+  for(; pre<=t; pre=t,t=t->next){
+    if(t->size>=size || t->next==pre) break;
   }
   if(t->size<size) return 0;
   if(t->size>size) {
@@ -134,13 +133,13 @@ dalloc(uint size){
     p = (struct node*)((char*)t + t->size);
     p++;
     p->size = size - sizeof(struct node);
+    p->next = t->next;
   }else{
     t->size = 0;
-    p = t;
+    p = t+1;
+    p->next = t->next;
     p->size = size - sizeof(struct node);
   }
-  p->next = t->next;
-  t->next = p;
   return (void*)(p+1);
 }
 
