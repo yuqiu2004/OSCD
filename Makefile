@@ -136,6 +136,7 @@ UPROGS=\
 	$U/_d1\
 	$U/_d2\
 	$U/_addr\
+	$U/_d3\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

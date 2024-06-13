@@ -44,6 +44,7 @@ sys_d3(void){
   kfree(p1);
   kfree(p2);
   kfree(p3);
+  return 0;
 }
 
 uint64
