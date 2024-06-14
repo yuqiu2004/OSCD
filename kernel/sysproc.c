@@ -32,18 +32,15 @@ sys_d2(void){
 
 uint64
 sys_d3(void){
-  printf("dalloc int long int ...\n");
-  void *p1 = dalloc(4), *p2 = dalloc(8), *p3 = dalloc(4);
+  printf("---------------------------------------------------------------------------------\n");
+  void *p1 = dalloc(16), *p2 = dalloc(8), *p3 = dalloc(16);
   printf("addresses of them are:\np1-%p\np2-%p\np3-%p\n",p1,p2,p3);
-  printf("kfree p2...\n");
-  kfree(p2);
-  printf("dalloc p2 for 4 bytes...\n");
-  p2 = dalloc(4);
-  printf("new p2-%p\n",p2);
+  
   printf("kfree all...\n");
-  kfree(p1);
-  kfree(p2);
-  kfree(p3);
+  dfree(p1);
+  dfree(p2);
+  dfree(p3);
+  printf("---------------------------------------------------------------------------------\n");
   return 0;
 }
 
