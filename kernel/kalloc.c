@@ -122,22 +122,25 @@ getSizeofStruct(void){
 void *
 dalloc(uint size){
   size += sizeof(struct node);
-  struct node *t, *p;
+  struct node *t, *pre, *p;
+  pre = 0;
   t = heap.head;
-  for(; ; ){
-    if(t->size>=size || t->next==heap.head) break;
-    t=t->next;
+  for(; pre<t; pre=t,t=t->next){
+    if(t->size>=size) break;
   }
   if(t->size<size) return 0;
   if(t->size>size) {
     t->size -= size;
-    p = (struct node*)((char*)t + t->size+sizeof(struct node));
+    p = (struct node*)((char*)t + t->size);
+    p++;
     p->size = size - sizeof(struct node);
   }else{
     t->size = 0;
-    p = t+1;
+    p = t;
     p->size = size - sizeof(struct node);
   }
+  p->next = t->next;
+  t->next = p;
   return (void*)(p+1);
 }
 
@@ -145,7 +148,7 @@ void
 dfree(void* p){
   struct node *t, *fr;
   fr = (struct node*) p - 1;
-  for(t=heap.head; !(fr>t && fr<t->next); t=t->next){
+  for(t=heap.head; !(fr>t && fr<=t->next); t=t->next){
     if(t>=t->next) break;
   }
   char *ct = (char *)t, *cfr = (char *)fr;
@@ -156,6 +159,7 @@ dfree(void* p){
     fr->next = t->next; // 和下一块不紧邻 指针指到下一块
   if(ct + t->size + sizeof(struct node) == (char*)fr){ // 和上一块紧邻 合并
     t->size += (fr->size + sizeof(struct node));
+    t->next = fr->next;
   } else
     t->next = fr; // 和上一块不紧邻 上一块的指针重定向到新回收的空闲块
 }

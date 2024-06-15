@@ -33,10 +33,17 @@ sys_d2(void){
 uint64
 sys_d3(void){
   printf("---------------------------------------------------------------------------------\n");
-  void *p1 = dalloc(16), *p2 = dalloc(8), *p3 = dalloc(16);
+  void *p1 = dalloc(2048*4096-1024), *p2 = dalloc(16), *p3 = dalloc(16);
   printf("addresses of them are:\np1-%p\np2-%p\np3-%p\n",p1,p2,p3);
   
-  printf("kfree all...\n");
+  printf("kfree p1...\n");
+  dfree(p1);
+
+  printf("dalloc big block...");
+  p1 = dalloc(2048*4096-2048);
+  printf("addr of p1 is %p\n",p1);
+
+  printf("dfree all...\n");
   dfree(p1);
   dfree(p2);
   dfree(p3);
